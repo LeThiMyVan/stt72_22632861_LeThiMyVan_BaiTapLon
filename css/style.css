@@ -1,0 +1,339 @@
+* {
+    margin: 0px auto;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+header h2 a {
+    text-decoration: none;
+    color: #114082;
+}
+
+.user {
+    display: flex;
+}
+
+.user img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+}
+
+.user button {
+    border: none;
+    border-radius: 10px;
+    margin-left: 5px;
+    padding: 0px 5px;
+}
+
+.user button:hover {
+    background-color: #a8a7a7;
+}
+
+.lead {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.banner {
+    background-image: url(../img/maunen.jpg);
+    width: 100%;
+    height: auto;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.navbar .nav-link {
+    color: #114082;
+}
+
+.navbar .nav-link:hover {
+    color: #577ca8;
+}
+
+.navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar-nav .dropdown-menu {
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .dropdown-item {
+    color: #114082;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-nav .dropdown-item:hover,
+.navbar-nav .dropdown-item:focus {
+    background-color: #f8f9fa;
+    color: #577ca8;
+}
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+main h2 {
+    text-align: center;
+    color: #114082;
+}
+
+main h4 {
+    margin-top: 20px;
+    color: #114082;
+    margin-left: 10px;
+}
+
+main p {
+    text-align: justify;
+}
+
+.footer {
+    background-color: #062546;
+    color: #fff;
+    padding: 60px 0 40px;
+    margin-top: 50px;
+}
+
+.footer-section {
+    margin-bottom: 30px;
+}
+
+.footer h5 {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    float: left;
+}
+
+.footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer ul li {
+    margin-bottom: 12px;
+}
+
+.footer ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 14px;
+}
+
+.footer ul li a:hover {
+    color: #ff6b35;
+}
+
+.store-locator {
+    background-color: #ff6b35;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.newsletter-input {
+    background-color: #2a2a2a;
+    border: 1px solid #404040;
+    color: #fff;
+    padding: 12px;
+    border-radius: 5px 0 0 5px;
+}
+
+.newsletter-input::placeholder {
+    color: #a0a0a0;
+    opacity: 1;
+}
+
+.newsletter-btn {
+    background-color: #ff6b35;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 0 5px 5px 0;
+    transition: all 0.3s ease;
+}
+
+.newsletter-btn:hover {
+    background-color: #e85a2a;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    background-size: cover;
+    /* Đảm bảo ảnh nền bao phủ */
+    background-position: center;
+    /* Căn giữa ảnh */
+}
+
+.social-icons a:hover {
+    transform: translateY(-3px);
+}
+
+.social-icons i {
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 40px 0 20px;
+    }
+    .footer-section {
+        margin-bottom: 30px;
+    }
+    .store-icon {
+        width: 150px;
+        margin-bottom: 20px;
+    }
+}
+
+
+/* Kiểu mới cho giỏ hàng */
+
+#cartButton {
+    cursor: pointer;
+}
+
+#cartItems {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+
+/* Styles mới cho hiển thị sản phẩm */
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#featured-products .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-name {
+    padding: 10px;
+    margin-bottom: 0;
+    text-align: center;
+    font-weight: bold;
+    /* Đảm bảo tên sản phẩm ở trên cùng */
+    order: -1;
+}
+
+#featured-products .col-md-3 {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.product-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-price {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.product-card .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.add-to-cart {
+    width: 100%;
+}
+
+.custom-dialog {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.dialog-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.dialog-content button {
+    margin-top: 10px;
+    padding: 5px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.dialog-content button:hover {
+    background-color: #0056b3;
+}

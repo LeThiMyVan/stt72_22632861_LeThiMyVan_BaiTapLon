@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .modal-buttons {
+            margin-top: 20px;
+        }
+        
+        .invalid-input {
+            border-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2 class="text-center mb-4">Đăng ký</h2>
+        <form id="registerForm" novalidate>
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Họ và tên</label>
+                <input type="text" class="form-control" id="fullName" required>
+                <div class="error-message" id="fullNameError">
+                    Họ và tên phải có ít nhất 2 từ và viết hoa chữ cái đầu
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+                <div class="error-message" id="emailError">
+                    Email không hợp lệ (ví dụ: name@gmail.com)
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <input type="tel" class="form-control" id="phone" required>
+                <div class="error-message" id="phoneError">
+                    Số điện thoại phải có 10 số và bắt đầu bằng số 0
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" required>
+                <div class="error-message" id="passwordError">
+                    Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ, số và ký tự đặc biệt
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
+        </form>
+    </div>
+
+    <!-- Modal thông báo -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="okButton">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Validation functions
+        function validateFullName(name) {
+            const words = name.trim().split(/\s+/);
+            return words.length >= 2 && words.every(word =>
+                word.length > 0 && word[0] === word[0].toUpperCase()
+            );
+        }
+
+        function validateEmail(email) {
+            const regex = /^[a-zA-Z0-9._-]{3,}@gmail\.com$/;
+            return regex.test(email);
+        }
+
+        function validatePhone(phone) {
+            const regex = /^0[1-9]\d{8}$/;
+            return regex.test(phone);
+        }
+
+        function validatePassword(password) {
+            const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+            return regex.test(password);
+        }
+
+        // Hiển thị lỗi cho một trường
+        function showError(inputElement, errorElement, show) {
+            errorElement.style.display = show ? 'block' : 'none';
+            inputElement.classList.toggle('invalid-input', show);
+        }
+
+        // Real-time validation
+        document.getElementById('fullName').addEventListener('blur', function() {
+            const errorElement = document.getElementById('fullNameError');
+            showError(this, errorElement, !validateFullName(this.value));
+        });
+
+        document.getElementById('email').addEventListener('blur', function() {
+            const errorElement = document.getElementById('emailError');
+            if (!validateEmail(this.value)) {
+                showError(this, errorElement, true);
+                return;
+            }
+
+            // Kiểm tra email đã tồn tại
+            const users = getUsers();
+            if (users.some(user => user.email === this.value)) {
+                errorElement.textContent = 'Email đã được đăng ký';
+                showError(this, errorElement, true);
+                return;
+            }
+
+            errorElement.textContent = 'Email không hợp lệ (ví dụ: name@gmail.com)';
+            showError(this, errorElement, false);
+        });
+
+        document.getElementById('phone').addEventListener('blur', function() {
+            const errorElement = document.getElementById('phoneError');
+            showError(this, errorElement, !validatePhone(this.value));
+        });
+
+        document.getElementById('password').addEventListener('blur', function() {
+            const errorElement = document.getElementById('passwordError');
+            showError(this, errorElement, !validatePassword(this.value));
+        });
+
+        // Lấy và lưu dữ liệu users
+        function getUsers() {
+            const users = localStorage.getItem('users');
+            return users ? JSON.parse(users) : [];
+        }
+
+        function saveUser(userData) {
+            const users = getUsers();
+            users.push(userData);
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Hiển thị modal
+        function showModal(message) {
+            const modal = document.getElementById('messageModal');
+            document.getElementById('modalMessage').textContent = message;
+            modal.style.display = 'block';
+        }
+
+        // Form handling
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            ['fullName', 'email', 'phone', 'password'].forEach(id => {
+                document.getElementById(id).dispatchEvent(new Event('blur'));
+            });
+
+            document.querySelectorAll('.error-message').forEach(elem => {
+                if (elem.style.display === 'block') {
+                    isValid = false;
+                }
+            });
+
+            if (isValid) {
+                saveUser({
+                    fullName: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    password: document.getElementById('password').value
+                });
+
+                showModal('Đăng ký thành công!');
+            }
+        });
+
+        // Xử lý nút OK trong modal
+        document.getElementById('okButton').addEventListener('click', function() {
+            const modal = document.getElementById('messageModal');
+            const modalMessage = document.getElementById('modalMessage');
+
+            if (modalMessage.textContent === 'Đăng ký thành công!') {
+                window.location.href = 'dangnhap.html';
+            } else {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

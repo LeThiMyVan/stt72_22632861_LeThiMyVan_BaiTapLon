@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .modal-buttons {
+            margin-top: 20px;
+        }
+        
+        .modal-buttons button {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2 class="text-center mb-4">Đăng nhập</h2>
+        <form id="loginForm" novalidate>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+            <div class="text-center mt-3">
+                <a href="dangki.html">Đăng ký ngay!</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal thông báo -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <div class="modal-buttons" id="modalButtons">
+                <button class="btn btn-primary" id="okButton">OK</button>
+                <button class="btn btn-success" id="registerButton" style="display: none;">Đăng ký</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Lấy dữ liệu từ localStorage
+        function getUsers() {
+            const users = localStorage.getItem('users');
+            return users ? JSON.parse(users) : [];
+        }
+
+        // Hiển thị modal
+        function showModal(message, showRegisterButton = false) {
+            const modal = document.getElementById('messageModal');
+            const modalMessage = document.getElementById('modalMessage');
+            const registerButton = document.getElementById('registerButton');
+
+            modalMessage.textContent = message;
+            registerButton.style.display = showRegisterButton ? 'inline-block' : 'none';
+            modal.style.display = 'block';
+        }
+
+        // Xử lý đăng nhập
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const users = getUsers();
+
+            const user = users.find(u => u.email === email);
+
+            if (!user) {
+                showModal('Email chưa được đăng ký', true);
+                return;
+            }
+
+            if (user.password !== password) {
+                showModal('Mật khẩu không đúng');
+                return;
+            }
+
+            // Lưu thông tin người dùng đăng nhập vào localStorage
+            localStorage.setItem('currentUser', JSON.stringify({
+                email: user.email,
+                name: user.name || user.email
+            }));
+
+            showModal('Đăng nhập thành công');
+        });
+
+        // Xử lý đóng modal
+        document.getElementById('okButton').addEventListener('click', function() {
+            const modal = document.getElementById('messageModal');
+            const modalMessage = document.getElementById('modalMessage');
+
+            if (modalMessage.textContent === 'Đăng nhập thành công') {
+                window.location.href = 'homepage.html';
+            } else {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Xử lý nút đăng ký trong modal
+        document.getElementById('registerButton').addEventListener('click', function() {
+            window.location.href = 'dangki.html';
+        });
+    </script>
+</body>
+
+</html>
